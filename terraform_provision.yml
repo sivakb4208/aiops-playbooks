@@ -1,0 +1,29 @@
+---
+- name: Provision infrastructure with Terraform
+  hosts: localhost
+  gather_facts: no
+  vars:
+    terraform_dir: /home/ec2-user/aiops-terraform
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+  tasks:
+    - name: Initialize Terraform
+      command: terraform init
+      args:
+        chdir: "{{ terraform_dir }}"
+
+    - name: Plan infrastructure
+      command: terraform plan -out=tfplan
+      args:
+        chdir: "{{ terraform_dir }}"
+
+    - name: Apply Terraform plan
+      command: terraform apply -auto-approve tfplan
+      args:
+        chdir: "{{ terraform_dir }}"
+      register: terraform_output
+
+    - name: Display output
+      debug:
+        msg: "{{ terraform_output.stdout }}"
