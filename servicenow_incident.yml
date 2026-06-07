@@ -2,6 +2,7 @@
 - name: Create ServiceNow Incident from Alert
   hosts: localhost
   gather_facts: no
+  become: no
   tasks:
     - name: Create ServiceNow Incident via REST API
       uri:
