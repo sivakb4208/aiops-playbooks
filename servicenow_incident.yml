@@ -1,0 +1,24 @@
+---
+- name: Create ServiceNow Incident from Alert
+  hosts: localhost
+  gather_facts: no
+  collections:
+    - servicenow.itsm
+  tasks:
+    - name: Create Incident
+      servicenow.itsm.incident:
+        instance:
+          host: "{{ sn_host }}"
+          username: "{{ sn_username }}"
+          password: "{{ sn_password }}"
+        state: new
+        caller: admin
+        short_description: "[AIOps] HighCPUUsage detected on 172.31.35.170"
+        description: "Automated incident created by AIOps platform via Ansible AAP"
+        impact: medium
+        urgency: medium
+      register: incident_result
+
+    - name: Print Incident Number
+      debug:
+        msg: "Incident created: {{ incident_result.record.number }}"
