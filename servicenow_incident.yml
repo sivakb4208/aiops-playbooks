@@ -1,6 +1,6 @@
 ---
 - name: Create ServiceNow Incident from Alert
-  hosts: vm2
+  hosts: localhost
   gather_facts: no
   collections:
     - servicenow.itsm
